@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="obstacle_detector" type="obstacle_detector.py" name="obstacle_detector" output="screen" cwd="node"/>
+</launch>
