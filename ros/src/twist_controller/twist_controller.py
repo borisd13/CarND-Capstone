@@ -7,18 +7,20 @@ DT = 0.2
 
 
 class Controller(object):
-    def __init__(self, steer_ratio, decel_limit, accel_limit):
+    def __init__(self, steer_ratio, decel_limit, accel_limit, max_steer_angle):
 
         self.steer_ratio = steer_ratio
+        self.max_steer_angle = max_steer_angle
         self.decel_limit = decel_limit
         self.accel_limit = accel_limit
 
+        self.steer_pid = PID(0.07, 0.0005, 5, -self.max_steer_angle, self.max_steer_angle)
         self.throttle_pid = PID(1, 0.1, 0.1, self.decel_limit, self.accel_limit)
         self.brake_pid = PID(1, 0.1, 0.1, self.decel_limit, self.accel_limit)
         self.last_velocity_error = 0
 
     def control(self, target_linear_velocity, target_angular_velocity,
-                current_linear_velocity, dbw_status):
+                current_linear_velocity, dbw_status, cte):
         '''Defines target throttle, brake and steering values'''
 
         if dbw_status:
@@ -39,7 +41,7 @@ class Controller(object):
                 brake = self.brake_pid.step(-velocity_error, DT)
 
             # implement steering controller
-            steering = self.steer_ratio * target_angular_velocity
+            steering = self.steer_pid.step(cte, DT)
 
             self.last_velocity_error = velocity_error
 

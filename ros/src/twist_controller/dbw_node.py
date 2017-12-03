@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from std_msgs.msg import Bool
+from std_msgs.msg import Bool, Float64
 from dbw_mkz_msgs.msg import ThrottleCmd, SteeringCmd, BrakeCmd, SteeringReport
 from geometry_msgs.msg import TwistStamped
 import math
@@ -54,29 +54,31 @@ class DBWNode(object):
                                          BrakeCmd, queue_size=1)
 
         # Create `TwistController` object
-        self.controller = Controller(steer_ratio, decel_limit, accel_limit)
+        self.controller = Controller(steer_ratio, decel_limit, accel_limit, max_steer_angle)
 
         # Subscribe to all necessary topics
         rospy.Subscriber('/twist_cmd', TwistStamped, self.upd_twist)
         rospy.Subscriber('/current_velocity', TwistStamped, self.upd_velocity)
         rospy.Subscriber('/vehicle/dbw_enabled', Bool, self.upd_dbw_enabled)
+        rospy.Subscriber('/cross_track_error', Float64, self.cte_cb)
 
         # Record data from subscribers
         self.twist_cmd = None
         self.current_velocity = None
         self.dbw_enabled = None
+        self.cte = None
 
         self.loop()
 
     def loop(self):
-        rate = rospy.Rate(50) # 50Hz
+        rate = rospy.Rate(10) # 10Hz
         while not rospy.is_shutdown():
 
-            if all([self.twist_cmd, self.current_velocity, self.dbw_enabled]):    # Ensure values have been initialized
+            if all([self.twist_cmd, self.current_velocity, self.dbw_enabled, self.cte]):    # Ensure values have been initialized
 
                 # Get predicted throttle, brake and steering
                 throttle, brake, steering = self.controller.control(self.twist_cmd.linear.x,
-                    self.twist_cmd.angular.z, self.current_velocity.linear.x, self.dbw_enabled)
+                    self.twist_cmd.angular.z, self.current_velocity.linear.x, self.dbw_enabled, self.cte)
 
                 # Ensure dbw is enabled (not manual mode)
                 if self.dbw_enabled:
@@ -119,6 +121,8 @@ class DBWNode(object):
         loginfo = 'dbw {}'.format(self.dbw_enabled)
         rospy.loginfo_throttle(1, loginfo)
 
+    def cte_cb(self, cte):
+        self.cte = cte.data
 
 if __name__ == '__main__':
     DBWNode()
