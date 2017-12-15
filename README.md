@@ -207,6 +207,24 @@ Clone the project repository
 
     git clone https://github.com/udacity/CarND-Capstone.git
 
-Run the docker file
+Install python dependencies
 
-    docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
+    cd CarND-Capstone
+    pip install -r requirements.txt
+    
+Make and run styx
+
+    cd ros
+    catkin_make
+    source devel/setup.sh
+    roslaunch launch/styx.launch
+    
+Run the simulator
+
+## Real world testing
+
+* Download training bag that was recorded on the Udacity self-driving car (a bag demonstraing the correct predictions in autonomous mode can be found here)
+* Unzip the file
+
+    unzip traffic_light_bag_files.zip
+    
