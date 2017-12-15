@@ -191,7 +191,7 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 
 ## Docker Installation
 
-Named Link](https://docs.docker.com/engine/installation/)
+[Named Link](https://docs.docker.com/engine/installation/)
 
 Build the docker container
 
