@@ -178,18 +178,20 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
       * 25 GB of free hard drive space
      The Udacity provided virtual machine has ROS and Dataspeed DBW already installed, so you can skip the next two steps if you are using this.
 
-Follow these instructions to install ROS
+   * Follow these instructions to install ROS
 
-ROS Kinetic if you have Ubuntu 16.04.
-ROS Indigo if you have Ubuntu 14.04.
-Dataspeed DBW
+     * ROS Kinetic if you have Ubuntu 16.04.
+     * ROS Indigo if you have Ubuntu 14.04.
 
-Use this option to install the SDK on a workstation that already has ROS installed: One Line SDK Install (binary)
-Download the Udacity Simulator.
+   * Dataspeed DBW
 
-Docker Installation
+     * Use this option to install the SDK on a workstation that already has ROS installed: One Line SDK Install (binary)
 
-Install Docker
+   * Download the Udacity Simulator.
+
+## Docker Installation
+
+Named Link](https://docs.docker.com/engine/installation/)
 
 Build the docker container
 
