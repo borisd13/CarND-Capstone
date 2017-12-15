@@ -227,4 +227,6 @@ Run the simulator
 * Unzip the file
 
     unzip traffic_light_bag_files.zip
-    
+    catkin_make
+    source devel/setup.sh
+    roslaunch launch/styx.launch
