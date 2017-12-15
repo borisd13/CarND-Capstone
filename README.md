@@ -203,9 +203,7 @@ Run the docker file
 
 ## Usage
 
-1. Clone the project repository
-
-
+Clone the project repository
 
     Docker build . -t capstone
 
