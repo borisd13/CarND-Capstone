@@ -1,71 +1,32 @@
-### Self driving car system integration project
+# Self driving car system integration project
+## Implemented by Team Rushers
 
-### Native Installation
+#### Dec 15, 2017
 
-* Be sure that your workstation is running Ubuntu 16.04 Xenial Xerus or Ubuntu 14.04 Trusty Tahir. [Ubuntu downloads can be found here](https://www.ubuntu.com/download/desktop).
-* If using a Virtual Machine to install Ubuntu, use the following configuration as minimum:
-  * 2 CPU
-  * 2 GB system memory
-  * 25 GB of free hard drive space
+# Objective
 
-  The Udacity provided virtual machine has ROS and Dataspeed DBW already installed, so you can skip the next two steps if you are using this.
+The objective of the project is to control CARLAs throttle, steering and brakes to navigate map waypoints to successfully drive the car on a highway. The car is expected to follow lanes, traffic lights and objects and plan a trajectory to follow based on the waypoints. The car should be able to classify “Red”, “Green”, and “Yellow” lights and be able to stop/start/slow down based on the traffic signal.
+Before running our code on CARLA we developed the code to work in a simulator. 
+The simulator works in a very similar way to CARLA as all ROS nodes and topics are same. So if our system works in the simulator, we expect that it should also work on CARLA. 
 
-* Follow these instructions to install ROS
-  * [ROS Kinetic](http://wiki.ros.org/kinetic/Installation/Ubuntu) if you have Ubuntu 16.04.
-  * [ROS Indigo](http://wiki.ros.org/indigo/Installation/Ubuntu) if you have Ubuntu 14.04.
-* [Dataspeed DBW](https://bitbucket.org/DataspeedInc/dbw_mkz_ros)
-  * Use this option to install the SDK on a workstation that already has ROS installed: [One Line SDK Install (binary)](https://bitbucket.org/DataspeedInc/dbw_mkz_ros/src/81e63fcc335d7b64139d7482017d6a97b405e250/ROS_SETUP.md?fileviewer=file-view-default)
-* Download the [Udacity Simulator](https://github.com/udacity/CarND-Capstone/releases/tag/v1.2).
+# The system architecture and principles behind it
 
-### Docker Installation
-[Install Docker](https://docs.docker.com/engine/installation/)
+The system architecture consists of the following modules:
 
-Build the docker container
-```bash
-docker build . -t capstone
-```
+## Perception
 
-Run the docker file
-```bash
-docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
-```
+Traffic light detection - We used a deep neural net to detect if the upcoming traffic light is red or not. We trained the classifier once with images from the simulator and once with real images from the ROS bag. A detailed description of the architecture and training parameters can be found in the respective section below (under additional resources implemented) 
+We employed the MobileNet architecture to efficiently detect / classify traffic lights. We applied transfer learning … and implemented on two modes as follows: 
+•	Simulator mode: classifies whole images as either red/green/yellow. The model was trained with several datasets using the Tensorflow Image Retraining Example 
+•	Test-site mode: we employed <> framework to locate a traffic light…
 
-### Usage
+## Planning
+The waypoint updater node publishes a queue of n waypoints ahead of the vehicle position, each with a target velocity. For the simulator, n=100 is sufficient. For the site (the real-world test track), we reduce to n=20. We dequeued traversed waypoints and enqueued new points, preserving and reusing those in the middle. When a light-state changes, the entire queue is updated. The vehicle stops at the final base waypoint. This module is performed using the ROS Package Waypoint updater which is explained as below:
+o	Waypoint Updater - sets target velocity for each waypoint based on upcoming traffic lights and obstacles.  This node subscribed to the nodes /base_waypoints, /current_pose, /obstacle_waypoint, and /traffic_waypoint topics, and published a list of waypoints ahead of the car with target velocities to the /final_waypoints topic.
 
-1. Clone the project repository
-```bash
-git clone https://github.com/udacity/CarND-Capstone.git
-```
+## Control subsystems
 
-2. Install python dependencies
-```bash
-cd CarND-Capstone
-pip install -r requirements.txt
-```
-3. Make and run styx
-```bash
-cd ros
-catkin_make
-source devel/setup.sh
-roslaunch launch/styx.launch
-```
-4. Run the simulator
+The control subsystem is implemented using the ROS Package drive-by-wire which adjusts throttle and brakes according to the velocity targets published by the waypoint follower (which is informed by the waypoint updater node). If the list of waypoints contains a series of descending velocity targets, the PID velocity controller (in the twist controller component of DBW) will attempt to match the target velocity
+o	DBW (Drive by Wire) - takes target trajectory information as input and sends control commands to navigate the vehicle.  The dbw_node subscribes to the /current_velocity topic along with the /twist_cmd topic to receive target linear and angular velocities. Additionally, this node subscribes to /vehicle/dbw_enabled, which indicates if the car is under dbw or driver control. This node will publish throttle, brake, and steering commands to the /vehicle/throttle_cmd, /vehicle/brake_cmd, and /vehicle/steering_cmd topics.
 
-### Real world testing
-1. Download [training bag](https://drive.google.com/file/d/0B2_h37bMVw3iYkdJTlRSUlJIamM/view?usp=sharing) that was recorded on the Udacity self-driving car (a bag demonstraing the correct predictions in autonomous mode can be found [here](https://drive.google.com/open?id=0B2_h37bMVw3iT0ZEdlF4N01QbHc))
-2. Unzip the file
-```bash
-unzip traffic_light_bag_files.zip
-```
-3. Play the bag file
-```bash
-rosbag play -l traffic_light_bag_files/loop_with_traffic_light.bag
-```
-4. Launch your project in site mode
-```bash
-cd CarND-Capstone/ros
-roslaunch launch/site.launch
-```
-5. Confirm that traffic light detection works on real life images
 
-![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/imgs/training.jpg)
