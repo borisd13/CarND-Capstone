@@ -67,3 +67,5 @@ cd CarND-Capstone/ros
 roslaunch launch/site.launch
 ```
 5. Confirm that traffic light detection works on real life images
+
+![stack Overflow](http://lmsotfy.com/so.png)
