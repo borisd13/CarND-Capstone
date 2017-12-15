@@ -168,16 +168,15 @@ In the chart below, for the chart with title speed, we transition from 13 mps to
 
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction here.
 
-Native Installation
+## Native Installation
 
-Be sure that your workstation is running Ubuntu 16.04 Xenial Xerus or Ubuntu 14.04 Trusty Tahir. Ubuntu downloads can be found here.
+   * Be sure that your workstation is running Ubuntu 16.04 Xenial Xerus or Ubuntu 14.04 Trusty Tahir. Ubuntu downloads can be found     here.
 
-If using a Virtual Machine to install Ubuntu, use the following configuration as minimum:
-
-2 CPU
-2 GB system memory
-25 GB of free hard drive space
-The Udacity provided virtual machine has ROS and Dataspeed DBW already installed, so you can skip the next two steps if you are using this.
+   * If using a Virtual Machine to install Ubuntu, use the following configuration as minimum:
+      * 2 CPU
+      * 2 GB system memory
+      * 25 GB of free hard drive space
+     The Udacity provided virtual machine has ROS and Dataspeed DBW already installed, so you can skip the next two steps if you are using this.
 
 Follow these instructions to install ROS
 
