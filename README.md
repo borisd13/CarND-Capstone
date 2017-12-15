@@ -195,7 +195,7 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 
 Build the docker container
 
-    > - Docker build . -t capstone
+    Docker build . -t capstone
 
 Run the docker file
 
