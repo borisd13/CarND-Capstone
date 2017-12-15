@@ -205,7 +205,7 @@ Run the docker file
 
 Clone the project repository
 
-    Docker build . -t capstone
+    git clone https://github.com/udacity/CarND-Capstone.git
 
 Run the docker file
 
