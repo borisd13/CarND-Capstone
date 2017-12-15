@@ -201,41 +201,14 @@ Run the docker file
 
     docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
 
-## Usage
+## Docker Installation
 
-1. Clone the project repository
-    
+[Install Docker](https://docs.docker.com/engine/installation/)
+
+Build the docker container
+
     Docker build . -t capstone
-    > - git clone https://github.com/udacity/CarND-Capstone.git
-  
-2. Install python dependencies
 
-    > - cd CarND-Capstone
-    > - pip install -r requirements.txt
-    
-3. Make and run styx
+Run the docker file
 
-    > - cd ros
-    > - catkin_make
-    > - source devel/setup.sh
-    > - roslaunch launch/styx.launch
-
-4. Run the simulator
-
-## Real world testing
-
-1. Download training bag that was recorded on the Udacity self-driving car (a bag demonstraing the correct predictions in autonomous mode can be found here)
-2. Unzip the file
-    
-    > - unzip traffic_light_bag_files.zip
-   
-3. Play the bag file
-    
-    > - rosbag play -l traffic_light_bag_files/loop_with_traffic_light.bag
-   
-4. Launch your project in site mode
-
-    > - cd CarND-Capstone/ros
-    > - roslaunch launch/site.launch
-   
-5. Confirm that traffic light detection works on real life images
+    docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
