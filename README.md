@@ -29,13 +29,13 @@ o	Waypoint Updater - sets target velocity for each waypoint based on upcoming tr
 The control subsystem is implemented using the ROS Package drive-by-wire which adjusts throttle and brakes according to the velocity targets published by the waypoint follower (which is informed by the waypoint updater node). If the list of waypoints contains a series of descending velocity targets, the PID velocity controller (in the twist controller component of DBW) will attempt to match the target velocity
 o	DBW (Drive by Wire) - takes target trajectory information as input and sends control commands to navigate the vehicle.  The dbw_node subscribes to the /current_velocity topic along with the /twist_cmd topic to receive target linear and angular velocities. Additionally, this node subscribes to /vehicle/dbw_enabled, which indicates if the car is under dbw or driver control. This node will publish throttle, brake, and steering commands to the /vehicle/throttle_cmd, /vehicle/brake_cmd, and /vehicle/steering_cmd topics.
 
-![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/imgs/architecture.png)
+![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/_images/architecture.png)
 
 ## Implementation Nodes
 
 The diagram below illustrates the system architecture. The autonomous vehicle controller is composed of three major units: perception, planning, and control.
 
-![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/imgs/Implementation%20Node.png)
+![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/_images/Implementation%20Node.png)
   
   a: /camera/image_raw
   b: /current_pose
@@ -85,7 +85,7 @@ We have considered classifying the entire image using CNN approach to solve the 
 Our program did an exponential moving average on the probability of seeing a red light on each frame and it seemed to be working while it had a test accuracy of about 74%. We decided to use the larger model if it was fast enough; otherwise we just used the smaller model
 - Large mobilenet (17Mo): 90.4% test accuracy (664 test samples)
 
-![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/imgs/training.jpg)
+![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/_images/training.jpg)
 
 Considering the fact that traffic lights are always in the same state, and focusing on the creation of a lightweight and fast model, we've chosen the direction of classifying the entire image for the simulator mode of operation. This approach uses a Convolutional Neural Network, which takes a whole image from the front camera as an input and predicts the traffic light state. We used the transfer learning technique on the MobileNet architecture with the Tensorflow Image Retraining Example 
 
@@ -113,7 +113,7 @@ Scaling is a lot like cropping, except that the bounding box is always centered 
 "Simple transfer learning with MobileNet model" example from TensorFlow was used to re-train our model.
 We started with a MobileNet model pre-trained on the ImageNet images, and trained a new set of fully-connected layers with dropout, which can recognize our traffic light classes of images. The model works with the image dimensions 224x224x3. The top fully connected layer receives as input a 1001-dimension feature vector (bottleneck_tensor_size = 1001) for each image. 
 
-![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/imgs/Network.png)
+![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/_images/Network.png)
 
 MobileNets are neural networks constructed for the purpose of running efficiently (high FPS, low memory footprint) on mobile and embedded devices. MobileNets achieve this with 3 techniques:
 1.	Perform a depth-wise convolution followed by a 1x1 convolution rather than a standard convolution. The 1x1 convolution is called a pointwise convolution if it's following a depth-wise convolution. The combination of a depth-wise convolution followed by a pointwise convolution is sometimes called a separable depth-wise convolution.
@@ -124,7 +124,7 @@ These 3 techniques reduce the size of cumulative parameters and therefore the co
 
 ## Accuracy on the simulator data
 
-![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/imgs/pasted_image_at_2017_12_13_10_02_am.png)
+![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/_images/pasted_image_at_2017_12_13_10_02_am.png)
 Figure 1:Depicts Lines on the top are testing/validation of big model (17Mo) and lines at the bottom are testing/validation of small model (2Mo)
 
 ## Accuracy on the udacity’s test track data
@@ -161,4 +161,4 @@ An optimized updater is important to the Drive-By-Wire node because it will redu
 The drive-by-wire node adjusts throttle and brakes according to the velocity targets published by the waypoint follower (which is informed by the waypoint updater node). If the list of waypoints contains a series of descending velocity targets, the PID velocity controller (in the twist controller component of DBW) will attempt to match the target velocity. 
 In the chart below, for the chart with title speed, we transition from 13 mps to 0 mps through a series of decreasing velocities across a plurality of waypoints. The blue line represents the target velocity, green is actual velocity. Green is braking on a scale from 0 to 1. The x-axis is the number of frames at 50 FPS (rate = rospy.Rate (50)).
 
-![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/imgs/figure_2-2.png)
+![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/_images/figure_2-2.png)
