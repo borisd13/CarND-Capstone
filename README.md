@@ -224,6 +224,7 @@ Run the simulator
 ## Real world testing
 
 A. Download training bag that was recorded on the Udacity self-driving car (a bag demonstraing the correct predictions in autonomous mode can be found here)
+
 B. Unzip the file
 
     unzip traffic_light_bag_files.zip
