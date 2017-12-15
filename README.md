@@ -143,6 +143,22 @@ Initialization of queue:
 Operation cycle at a frequency of 2 Hz:
 
 Operation cycle at a frequency of 2 Hz:
-•	###Manage waypoint queue: Dequeue consumed waypoints with coordinates "behind" the current vehicle position. Enqueue waypoints from base list starting from last until queue is restored to n in length. (Unless final is encountered).
-•	###Update velocity: If red/yellow light NOT within range (4 m for site, 62 m for simulator), set waypoint velocity to defaults (10 km/h for site, 40 km/h for simulator) given in base list. If red/yellow within range, update each waypoint velocity so that the vehicle comes to a halt at the stop-line waypoint. Decrease velocity at a constant rate of -1.0 m/s2. Velocity beyond the stop line should be set to zero.
 
+•	Manage waypoint queue: Dequeue consumed waypoints with coordinates "behind" the current vehicle position. Enqueue waypoints from base list starting from last until queue is restored to n in length. (Unless final is encountered).
+•	Update velocity: If red/yellow light NOT within range (4 m for site, 62 m for simulator), set waypoint velocity to defaults (10 km/h for site, 40 km/h for simulator) given in base list. If red/yellow within range, update each waypoint velocity so that the vehicle comes to a halt at the stop-line waypoint. Decrease velocity at a constant rate of -1.0 m/s2. Velocity beyond the stop line should be set to zero.
+
+## Optimization
+
+As the vehicle moved along a path, the waypoint updater made changes to the planned path. Presently, there are no dynamic obstacles other than the traffic lights. In theory, we can make a plan and then simply follow that plan, add to the end of that plan, and make adjustments when a traffic light changes state.
+Currently, the code creates a completely new list of waypoints on each cycle. (This is inefficient...as an initial draft.) This list contains the next <> waypoints from our present position. The re-planning event occurs at a rate of once per pose callback (<> times per second). 
+Ideally this planning can occur far less frequently. For example only when a change in traffic light is detected or as we near the end of our current waypoint list. Alternatively we might add a few new waypoints to the end of our current list (and avoid re-creating the entire list).
+An optimized updater is important to the Drive-By-Wire node because it will reduce unnecessary accelerations due to plan changes. For instance, when the vehicle is approaching a red traffic light, a ramp down in velocity is planned. If the one plan is followed, the acceleration will be smoothly executed. On the other hand, presently the updater replans too frequently, and because the vehicle is in a new location, a new velocity ramp is created. This leads to interruptions in the deceleration plan to the stop line. 
+
+# Drive By Wire
+
+## Velocity Targets (Stepped)
+
+The drive-by-wire node adjusts throttle and brakes according to the velocity targets published by the waypoint follower (which is informed by the waypoint updater node). If the list of waypoints contains a series of descending velocity targets, the PID velocity controller (in the twist controller component of DBW) will attempt to match the target velocity. 
+In the chart below, for the chart with title speed, we transition from 13 mps to 0 mps through a series of decreasing velocities across a plurality of waypoints. The blue line represents the target velocity, green is actual velocity. Green is braking on a scale from 0 to 1. The x-axis is the number of frames at 50 FPS (rate = rospy.Rate (50)).
+
+![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/imgs/figure_2-2.png)
