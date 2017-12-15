@@ -204,9 +204,7 @@ Run the docker file
 ## Usage
 
 1. Clone the project repository
-
-    Docker build . -t capstone
-
+    
     > - git clone https://github.com/udacity/CarND-Capstone.git
   
 2. Install python dependencies
@@ -227,16 +225,16 @@ Run the docker file
 
 1. Download training bag that was recorded on the Udacity self-driving car (a bag demonstraing the correct predictions in autonomous mode can be found here)
 2. Unzip the file
-
-   > - unzip traffic_light_bag_files.zip
+    
+    > - unzip traffic_light_bag_files.zip
    
 3. Play the bag file
-
-   > - rosbag play -l traffic_light_bag_files/loop_with_traffic_light.bag
+    
+    > - rosbag play -l traffic_light_bag_files/loop_with_traffic_light.bag
    
 4. Launch your project in site mode
 
-   > - cd CarND-Capstone/ros
-   > - roslaunch launch/site.launch
+    > - cd CarND-Capstone/ros
+    > - roslaunch launch/site.launch
    
 5. Confirm that traffic light detection works on real life images
