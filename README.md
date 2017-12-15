@@ -229,3 +229,13 @@ B. Unzip the file
 
     unzip traffic_light_bag_files.zip
     
+C. Play the bag file
+
+    rosbag play -l traffic_light_bag_files/loop_with_traffic_light.bag
+    
+D. Launch your project in site mode
+
+    cd CarND-Capstone/ros
+    roslaunch launch/site.launch
+    
+E. Confirm that traffic light detection works on real life images
