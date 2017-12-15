@@ -199,7 +199,7 @@ Build the docker container
 
 Run the docker file
 
-    > - docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
+    docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
 
 ## Usage
 
