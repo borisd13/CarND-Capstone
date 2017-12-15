@@ -205,6 +205,7 @@ Run the docker file
 
 1. Clone the project repository
     
+    Docker build . -t capstone
     > - git clone https://github.com/udacity/CarND-Capstone.git
   
 2. Install python dependencies
