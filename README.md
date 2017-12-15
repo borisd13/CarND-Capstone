@@ -201,13 +201,13 @@ Run the docker file
 
     docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
 
-## Docker Installation
+## Usage
 
-[Install Docker](https://docs.docker.com/engine/installation/)
+1. Clone the project repository
 
-Build the docker container
 
-    Docker build . -t capstone
+
+    git clone https://github.com/udacity/CarND-Capstone.git
 
 Run the docker file
 
