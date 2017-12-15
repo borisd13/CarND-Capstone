@@ -162,3 +162,63 @@ The drive-by-wire node adjusts throttle and brakes according to the velocity tar
 In the chart below, for the chart with title speed, we transition from 13 mps to 0 mps through a series of decreasing velocities across a plurality of waypoints. The blue line represents the target velocity, green is actual velocity. Green is braking on a scale from 0 to 1. The x-axis is the number of frames at 50 FPS (rate = rospy.Rate (50)).
 
 ![alt text](https://github.com/ayanangshu/CarND-Capstone/blob/master/imgs/figure_2-2.png)
+
+
+# The original readme from Udacity
+
+This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction here.
+
+Native Installation
+
+Be sure that your workstation is running Ubuntu 16.04 Xenial Xerus or Ubuntu 14.04 Trusty Tahir. Ubuntu downloads can be found here.
+
+If using a Virtual Machine to install Ubuntu, use the following configuration as minimum:
+
+2 CPU
+2 GB system memory
+25 GB of free hard drive space
+The Udacity provided virtual machine has ROS and Dataspeed DBW already installed, so you can skip the next two steps if you are using this.
+
+Follow these instructions to install ROS
+
+ROS Kinetic if you have Ubuntu 16.04.
+ROS Indigo if you have Ubuntu 14.04.
+Dataspeed DBW
+
+Use this option to install the SDK on a workstation that already has ROS installed: One Line SDK Install (binary)
+Download the Udacity Simulator.
+
+Docker Installation
+
+Install Docker
+
+Build the docker container
+
+docker build . -t capstone
+Run the docker file
+
+docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
+Usage
+
+Clone the project repository
+git clone https://github.com/udacity/CarND-Capstone.git
+Install python dependencies
+cd CarND-Capstone
+pip install -r requirements.txt
+Make and run styx
+cd ros
+catkin_make
+source devel/setup.sh
+roslaunch launch/styx.launch
+Run the simulator
+Real world testing
+
+Download training bag that was recorded on the Udacity self-driving car (a bag demonstraing the correct predictions in autonomous mode can be found here)
+Unzip the file
+unzip traffic_light_bag_files.zip
+Play the bag file
+rosbag play -l traffic_light_bag_files/loop_with_traffic_light.bag
+Launch your project in site mode
+cd CarND-Capstone/ros
+roslaunch launch/site.launch
+Confirm that traffic light detection works on real life images
