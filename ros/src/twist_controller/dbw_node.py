@@ -35,7 +35,7 @@ that we have created in the `__init__` function.
 
 class DBWNode(object):
     def __init__(self):
-        rospy.init_node('dbw_node')
+        rospy.init_node('dbw_node', log_level=rospy.DEBUG)
 
         vehicle_mass = rospy.get_param('~vehicle_mass', 1736.35)
         fuel_capacity = rospy.get_param('~fuel_capacity', 13.5)
@@ -61,6 +61,11 @@ class DBWNode(object):
         self.controller = Controller(steer_ratio, decel_limit, accel_limit, max_steer_angle, wheel_base, max_lat_accel,
                                      max_throttle_percent, max_braking_percent)
 
+        # Logging data in csv file
+        self.log_to_csv = True
+        if self.log_to_csv:
+            self.log_handle = self.log_init('dbw_node.csv')
+            
         # Subscribe to all necessary topics
         rospy.Subscriber('/twist_cmd', TwistStamped, self.upd_twist)
         rospy.Subscriber('/current_velocity', TwistStamped, self.upd_velocity)
@@ -70,11 +75,6 @@ class DBWNode(object):
         self.twist_cmd = None
         self.current_velocity = None
         self.dbw_enabled = None
-
-        # Logging data in csv file
-        self.log_to_csv = True
-        if self.log_to_csv:
-            self.log_handle = self.log_init('dbw_node.csv')
 
         self.loop()
 
@@ -148,7 +148,9 @@ class DBWNode(object):
         return log_handle
         
     def log_data(self, *args):
-        self.log_handle.write(','.join(str(arg) for arg in args) + '\n')
+        info = ','.join(str(arg) for arg in args)
+        self.log_handle.write(info + '\n')
+        rospy.logdebug_throttle(0.1, 'dbw_node,' + info)
 
 
 if __name__ == '__main__':

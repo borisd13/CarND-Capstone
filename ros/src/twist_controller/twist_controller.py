@@ -106,4 +106,6 @@ class Controller(object):
         return throttle, brake, steering
     
     def log_data(self, log_handle, *args):
-        log_handle.write(','.join(str(arg) for arg in args) + ',')
+        info = ','.join(str(arg) for arg in args)
+        log_handle.write(info + ',')
+        rospy.logdebug_throttle(0.1, 'twist_controller,' + info)
