@@ -37,7 +37,7 @@ DIST_MIN = 6   # distance we need to be from stop line
 
 class WaypointUpdater(object):
     def __init__(self):
-        rospy.init_node('waypoint_updater')
+        rospy.init_node('waypoint_updater', log_level=rospy.DEBUG)
         self.ego_pos = None
         self.wps = None
         self.final_wps = None
@@ -191,7 +191,7 @@ class WaypointUpdater(object):
                                + (wpidx[1].pose.pose.position.y - self.ego_pos.position.y) ** 2)
         closest_index = closest_waypoint[0]
         loginfo += '| Closest waypoint index: {}'.format(closest_index)
-        rospy.logdebug_throttle(1, loginfo)
+        rospy.logdebug_throttle(0.1, loginfo)
 
         return closest_index
 
@@ -205,7 +205,9 @@ class WaypointUpdater(object):
         return log_handle
 
     def log_data(self, *args):
-        self.log_handle.write(','.join(str(arg) for arg in args) + '\n')
+        info = ','.join(str(arg) for arg in args)
+        self.log_handle.write(info + '\n')
+        rospy.logdebug_throttle(0.1, 'waypoint_updater,' + info)
 
 
 if __name__ == '__main__':

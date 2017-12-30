@@ -21,7 +21,7 @@ RED_PROBABILITY_THRESH = 0.5        # consider there is a red light if our confi
 
 class TLDetector(object):
     def __init__(self):
-        rospy.init_node('tl_detector')
+        rospy.init_node('tl_detector', log_level=rospy.DEBUG)
 
         self.pose = None
         self.waypoints = None
@@ -68,7 +68,7 @@ class TLDetector(object):
         """Identifies red lights in the incoming camera image and publishes the index
             of the waypoint closest to the red light's stop line to /traffic_waypoint"""
 
-        rate = rospy.Rate(3)
+        rate = rospy.Rate(5)
         while not rospy.is_shutdown():
 
             # Ensure all required parameters have been initialized
@@ -204,7 +204,9 @@ class TLDetector(object):
         return log_handle
 
     def log_data(self, *args):
-        self.log_handle.write(','.join(str(arg) for arg in args) + '\n')
+        info = ','.join(str(arg) for arg in args)
+        self.log_handle.write(info + '\n')
+        rospy.logdebug_throttle(0.1, 'tl_detector,' + info)
 
 if __name__ == '__main__':
     try:
