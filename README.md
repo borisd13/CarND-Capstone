@@ -108,7 +108,11 @@ We decided to proceed with implementing our code on a real car.
 
 ## Implementation on a real car
 
-The code has been submitted for running on Carla (Udacity's self-driving car)!
+The code has already run twice on Carla (Udacity's self-driving car) and successfully followed its path!
+
+While it met the specifications, the ride could be smoother by using a feed forward PID once the calibration is possible after measurements of Carla's response to commands.
+
+TODO: add video
 
 Results coming soon!!!
 
